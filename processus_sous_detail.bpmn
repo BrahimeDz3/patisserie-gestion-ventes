@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Definitions_SousProcess" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.2">
+  <bpmn:process id="Process_EnregistrerVente" name="Sous-processus: Enregistrer une vente" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Début vente" />
+    <bpmn:userTask id="Task_SelectionProduits" name="Sélectionner les produits" />
+    <bpmn:serviceTask id="Task_CalculTotal" name="Calculer le montant total" />
+    <bpmn:userTask id="Task_Encaissement" name="Encaissement (espèces/carte)" />
+    <bpmn:serviceTask id="Task_MajStock" name="Mettre à jour le stock (décrémentation)" />
+    <bpmn:endEvent id="EndEvent_1" name="Fin vente" />
+    <bpmn:sequenceFlow id="Flow1" sourceRef="StartEvent_1" targetRef="Task_SelectionProduits" />
+    <bpmn:sequenceFlow id="Flow2" sourceRef="Task_SelectionProduits" targetRef="Task_CalculTotal" />
+    <bpmn:sequenceFlow id="Flow3" sourceRef="Task_CalculTotal" targetRef="Task_Encaissement" />
+    <bpmn:sequenceFlow id="Flow4" sourceRef="Task_Encaissement" targetRef="Task_MajStock" />
+    <bpmn:sequenceFlow id="Flow5" sourceRef="Task_MajStock" targetRef="EndEvent_1" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_EnregistrerVente">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
+        <dc:Bounds x="170" y="80" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="158" y="116" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectionProduits_di" bpmnElement="Task_SelectionProduits">
+        <dc:Bounds x="270" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CalculTotal_di" bpmnElement="Task_CalculTotal">
+        <dc:Bounds x="450" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Encaissement_di" bpmnElement="Task_Encaissement">
+        <dc:Bounds x="630" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_MajStock_di" bpmnElement="Task_MajStock">
+        <dc:Bounds x="810" y="60" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
+        <dc:Bounds x="990" y="80" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="985" y="116" width="46" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow1_di" bpmnElement="Flow1">
+        <di:waypoint x="206" y="98" />
+        <di:waypoint x="270" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow2_di" bpmnElement="Flow2">
+        <di:waypoint x="390" y="100" />
+        <di:waypoint x="450" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow3_di" bpmnElement="Flow3">
+        <di:waypoint x="570" y="100" />
+        <di:waypoint x="630" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow4_di" bpmnElement="Flow4">
+        <di:waypoint x="750" y="100" />
+        <di:waypoint x="810" y="100" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow5_di" bpmnElement="Flow5">
+        <di:waypoint x="930" y="100" />
+        <di:waypoint x="990" y="98" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
