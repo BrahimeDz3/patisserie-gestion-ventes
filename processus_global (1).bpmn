@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:color="http://www.omg.org/spec/BPMN/non-normative/color/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="bpmn-js (https://demo.bpmn.io)" exporterVersion="18.13.2">
+  <bpmn:collaboration id="Collaboration_1">
+    <bpmn:participant id="Participant_1" name="Application de gestion de patisserie" processRef="Process_GestionPatisserie" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_GestionPatisserie" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_1">
+      <bpmn:lane id="Lane_Vendeur" name="Vendeur">
+        <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>EndEvent_1</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_AlerteStock</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ServiceTask_MajStock</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_GenererTicket</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>UserTask_EnregistrerVente</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_StockFaible</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Admin" name="Administrateur">
+        <bpmn:flowNodeRef>Task_GererProduits</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_1" name="Debut" />
+    <bpmn:endEvent id="EndEvent_1" name="Fin" />
+    <bpmn:task id="Task_GererProduits" name="Gerer les produits (CRUD)" />
+    <bpmn:task id="Task_AlerteStock" name="Declencher alerte stock" />
+    <bpmn:serviceTask id="ServiceTask_MajStock" name="Mettre a jour le stock">
+      <bpmn:incoming>Flow_Enregistrer_Maj</bpmn:incoming>
+    </bpmn:serviceTask>
+    <bpmn:task id="Task_GenererTicket" name="Generer le ticket de vente" />
+    <bpmn:userTask id="UserTask_EnregistrerVente" name="Enregistrer une vente">
+      <bpmn:incoming>Flow_Gerer_Enregistrer</bpmn:incoming>
+      <bpmn:outgoing>Flow_Enregistrer_Maj</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_StockFaible" name="Stock &#60; seuil ?" />
+    <bpmn:sequenceFlow id="Flow_Debut_Gerer" sourceRef="StartEvent_1" targetRef="Task_GererProduits" />
+    <bpmn:sequenceFlow id="Flow_Gateway_Fin" name="non" sourceRef="Gateway_StockFaible" targetRef="EndEvent_1">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">stock &gt;= seuil</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Alerte_Fin" sourceRef="Task_AlerteStock" targetRef="EndEvent_1" />
+    <bpmn:sequenceFlow id="Flow_Gerer_Enregistrer" sourceRef="Task_GererProduits" targetRef="UserTask_EnregistrerVente" />
+    <bpmn:sequenceFlow id="Flow_Gateway_Alerte" name="oui" sourceRef="Gateway_StockFaible" targetRef="Task_AlerteStock">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">stock &lt; seuil</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_Enregistrer_Maj" sourceRef="UserTask_EnregistrerVente" targetRef="ServiceTask_MajStock" />
+    <bpmn:sequenceFlow id="Flow_Maj_Ticket" sourceRef="ServiceTask_MajStock" targetRef="Task_GenererTicket" />
+    <bpmn:sequenceFlow id="Flow_Ticket_Gateway" sourceRef="Task_GenererTicket" targetRef="Gateway_StockFaible" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_1">
+      <bpmndi:BPMNShape id="Participant_1_di" bpmnElement="Participant_1" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1320" height="580" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Vendeur_di" bpmnElement="Lane_Vendeur" isHorizontal="true">
+        <dc:Bounds x="160" y="305" width="1320" height="355" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Admin_di" bpmnElement="Lane_Admin" isHorizontal="true">
+        <dc:Bounds x="160" y="80" width="1320" height="225" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
+        <dc:Bounds x="320" y="315" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="323" y="351" width="31" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1" bioc:stroke="#0d4372" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#0d4372">
+        <dc:Bounds x="1240" y="315" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1250" y="351" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GererProduits_di" bpmnElement="Task_GererProduits">
+        <dc:Bounds x="410" y="130" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_AlerteStock_di" bpmnElement="Task_AlerteStock" bioc:stroke="#831311" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#831311">
+        <dc:Bounds x="1000" y="483" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_MajStock_di" bpmnElement="ServiceTask_MajStock">
+        <dc:Bounds x="740" y="340" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_GenererTicket_di" bpmnElement="Task_GenererTicket">
+        <dc:Bounds x="900" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="UserTask_EnregistrerVente_di" bpmnElement="UserTask_EnregistrerVente">
+        <dc:Bounds x="570" y="340" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_StockFaible_di" bpmnElement="Gateway_StockFaible" isMarkerVisible="true" bioc:stroke="#205022" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#205022">
+        <dc:Bounds x="1065" y="355" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1054" y="331" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_Debut_Gerer_di" bpmnElement="Flow_Debut_Gerer">
+        <di:waypoint x="356" y="333" />
+        <di:waypoint x="410" y="333" />
+        <di:waypoint x="410" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Gerer_Enregistrer_di" bpmnElement="Flow_Gerer_Enregistrer">
+        <di:waypoint x="510" y="170" />
+        <di:waypoint x="570" y="170" />
+        <di:waypoint x="570" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Enregistrer_Maj_di" bpmnElement="Flow_Enregistrer_Maj">
+        <di:waypoint x="670" y="380" />
+        <di:waypoint x="740" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Maj_Ticket_di" bpmnElement="Flow_Maj_Ticket">
+        <di:waypoint x="840" y="380" />
+        <di:waypoint x="900" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Ticket_Gateway_di" bpmnElement="Flow_Ticket_Gateway">
+        <di:waypoint x="1000" y="380" />
+        <di:waypoint x="1065" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Gateway_Fin_di" bpmnElement="Flow_Gateway_Fin">
+        <di:waypoint x="1113" y="382" />
+        <di:waypoint x="1175" y="382" />
+        <di:waypoint x="1175" y="331" />
+        <di:waypoint x="1240" y="331" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1130" y="363" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Alerte_Fin_di" bpmnElement="Flow_Alerte_Fin">
+        <di:waypoint x="1050" y="571" />
+        <di:waypoint x="1188" y="571" />
+        <di:waypoint x="1188" y="351" />
+        <di:waypoint x="1258" y="351" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_Gateway_Alerte_di" bpmnElement="Flow_Gateway_Alerte">
+        <di:waypoint x="1065" y="380" />
+        <di:waypoint x="1025" y="380" />
+        <di:waypoint x="1025" y="483" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1037" y="362" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
